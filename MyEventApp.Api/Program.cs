@@ -12,9 +12,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSingleton<NHibernateHelper>();
 
 var conn = builder.Configuration.GetConnectionString("SQLite");
-var sf = NHibernateHelper.CreateSessionFactory();
+var nhHelper = builder.Services.BuildServiceProvider().GetRequiredService<NHibernateHelper>();
+var sf = nhHelper.CreateSessionFactory();
 builder.Services.AddSingleton(sf);
 builder.Services.AddScoped(sp => sp.GetRequiredService<ISessionFactory>().OpenSession());
 
@@ -30,7 +32,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:4200/")
               .AllowAnyMethod()
               .AllowAnyHeader();
     });

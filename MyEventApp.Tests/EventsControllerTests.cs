@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyEventApp.Api.Controllers;
 using MyEventApp.Core.Models;
@@ -21,10 +22,11 @@ namespace MyEventApp.Tests
             new Event { Id = Guid.NewGuid(), Name = "Event2", StartsOn = DateTime.UtcNow.AddDays(2) }
         };
             mockService.Setup(s => s.GetUpcomingEventsAsync(30)).ReturnsAsync(expectedEvents);
-            var controller = new EventsController(mockService.Object);
+            var mockLogger = new Mock<ILogger<EventsController>>();
+            var controller = new EventsController(mockService.Object, mockLogger.Object);
 
             // Act
-            var result = await controller.Get(30);
+            var result = await controller.GetUpcomingEvents(30);
 
             // Assert
             Assert.IsInstanceOf<OkObjectResult>(result);

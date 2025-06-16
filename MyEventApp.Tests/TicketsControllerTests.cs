@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Moq;
 using MyEventApp.Api.Controllers;
 using MyEventApp.Core.Models;
@@ -21,7 +22,8 @@ namespace MyEventApp.Tests
             new TicketSale { Id = Guid.NewGuid(), EventId = eventId, PriceInCents = 1500 }
         };
             mockService.Setup(s => s.GetTicketsForEventAsync(eventId)).ReturnsAsync(expectedTickets);
-            var controller = new TicketsController(mockService.Object);
+            var mockLogger = new Mock<ILogger<TicketsController>>();
+            var controller = new TicketsController(mockService.Object, mockLogger.Object);
 
             // Act
             var result = await controller.GetForEvent(eventId);
@@ -42,7 +44,8 @@ namespace MyEventApp.Tests
             new EventSales { EventId = Guid.NewGuid(), TotalQuantity = 100, TotalRevenue = 1000m }
         };
             mockService.Setup(s => s.GetTop5ByQuantityAsync()).ReturnsAsync(expectedTop5);
-            var controller = new TicketsController(mockService.Object);
+            var mockLogger = new Mock<ILogger<TicketsController>>();
+            var controller = new TicketsController(mockService.Object, mockLogger.Object);
 
             // Act
             var result = await controller.TopByQty();
@@ -63,7 +66,8 @@ namespace MyEventApp.Tests
             new EventSales { EventId = Guid.NewGuid(), TotalQuantity = 50, TotalRevenue = 2000m }
         };
             mockService.Setup(s => s.GetTop5ByRevenueAsync()).ReturnsAsync(expectedTop5);
-            var controller = new TicketsController(mockService.Object);
+            var mockLogger = new Mock<ILogger<TicketsController>>();
+            var controller = new TicketsController(mockService.Object, mockLogger.Object);
 
             // Act
             var result = await controller.TopByRev();

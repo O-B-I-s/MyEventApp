@@ -4,6 +4,9 @@ using NHibernate.Type;
 
 namespace MyEventApp.Data.Mappings
 {
+    /// <summary>
+    /// NHibernate mapping configuration for the TicketSale entity.
+    /// </summary>
     public class TicketSaleMap : ClassMap<TicketSale>
     {
         public TicketSaleMap()

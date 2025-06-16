@@ -4,6 +4,9 @@ using NHibernate.Linq;
 
 namespace MyEventApp.Data.Repositories
 {
+    /// <summary>
+    /// Repository for managing Event entities with NHibernate persistence
+    /// </summary>
     public class EventRepository : IEventRepository
     {
         private readonly ISession _session;

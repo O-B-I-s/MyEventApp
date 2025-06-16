@@ -8,7 +8,7 @@ import { Events, TicketSale, EventSales } from '../models';
 export class ApiService {
   constructor(private http: HttpClient) { }
 
-  fetchEvents(days = 60): Observable<Events[]> {
+  fetchEvents(days = 180): Observable<Events[]> {
     return this.http
       .get<Events[]>(`/api/events?days=${days}`)
       .pipe(catchError(this.handleError));
