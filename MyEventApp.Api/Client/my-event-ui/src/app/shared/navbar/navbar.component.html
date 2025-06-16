@@ -1,0 +1,65 @@
+<nav class="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16 items-center">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <a routerLink="/" class="text-xl font-bold text-blue-600">MyEventApp</a>
+      </div>
+
+      <!-- Desktop Nav -->
+      <div class="hidden md:flex space-x-6">
+        <a routerLink="/events" class="text-gray-700 hover:text-blue-600"
+          >Events</a
+        >
+        <a routerLink="/sales" class="text-gray-700 hover:text-blue-600"
+          >Sales</a
+        >
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <div class="md:hidden flex items-center">
+        <button
+          (click)="toggleMenu()"
+          class="text-gray-700 hover:text-blue-600 focus:outline-none"
+        >
+          <svg
+            class="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              [attr.d]="
+                isMenuOpen ? 'M6 18L18 6M6 6l12 12' : 'M4 6h16M4 12h16M4 18h16'
+              "
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Nav -->
+  <div
+    *ngIf="isMenuOpen"
+    class="md:hidden bg-white border-t border-gray-200 px-4 pb-4"
+  >
+    <a
+      routerLink="/events"
+      (click)="closeMenu()"
+      class="block py-2 text-gray-700 hover:text-blue-600"
+      >Events</a
+    >
+
+    <a
+      routerLink="/sales"
+      (click)="closeMenu()"
+      class="block py-2 text-gray-700 hover:text-blue-600"
+      >Sales
+    </a>
+  </div>
+</nav>

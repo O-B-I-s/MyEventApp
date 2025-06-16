@@ -1,5 +1,6 @@
 ﻿using FluentNHibernate.Cfg;
 using FluentNHibernate.Cfg.Db;
+using Microsoft.Extensions.Configuration;
 using MyEventApp.Data.Mappings;
 using NHibernate;
 
@@ -7,17 +8,20 @@ namespace MyEventApp.Data
 {
     public class NHibernateHelper
     {
+        private readonly IConfiguration _config;
         private static ISessionFactory _sf;
-        public static ISessionFactory CreateSessionFactory()
+        public NHibernateHelper(IConfiguration config)
+        {
+            _config = config;
+        }
+
+
+        public ISessionFactory CreateSessionFactory()
         {
             if (_sf != null) return _sf;
+            var connectionString = _config.GetConnectionString("SQLite");
 
-            // Build absolute path to the DB file
-            var baseDir = AppContext.BaseDirectory;
-            var dbPath = Path.GetFullPath(Path.Combine(baseDir,
-                              "..", "..", "..", "Db", "skillsAssessmentEvents.db"));
-            Console.WriteLine("Using database at: " + dbPath);
-            var connString = $"Data Source={dbPath};Version=3;";
+
 
             //Configure Fluent NHibernate
             try
@@ -25,7 +29,7 @@ namespace MyEventApp.Data
                 _sf = Fluently.Configure()
                    .Database(
                        SQLiteConfiguration.Standard
-                           .ConnectionString(connString)
+                           .ConnectionString(connectionString)
                            .ShowSql()
                    )
                    .Mappings(m => m.FluentMappings

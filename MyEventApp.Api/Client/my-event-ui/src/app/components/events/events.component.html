@@ -1,0 +1,140 @@
+<div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 p-4 md:p-8">
+  <div class="max-w-6xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+      <h1 class="text-3xl font-bold text-gray-800">
+        Event Management Dashboard
+      </h1>
+      <p class="text-gray-600 mt-2">
+        Manage and track all your events in one place
+      </p>
+    </div>
+
+    <!-- Error Message -->
+    <div *ngIf="error"
+         class="p-4 mb-6 rounded-xl bg-red-50 border border-red-200 flex items-center">
+      <mat-icon class="text-red-500 mr-3">error</mat-icon>
+      <div class="text-red-700 font-medium">{{ error }}</div>
+    </div>
+
+    <!-- Search and Filters -->
+    <div class="bg-white rounded-xl shadow-sm p-4 mb-6 border border-gray-100">
+      <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <mat-form-field class="w-full md:w-96">
+          <mat-label>Search Events</mat-label>
+          <input matInput
+                 (keyup)="applyFilter($event)"
+                 placeholder="Filter by name or location" />
+          <mat-icon matPrefix class="text-gray-400 mr-2">search</mat-icon>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-white rounded-xl shadow-sm overflow-hidden border border-gray-100">
+      <table mat-table [dataSource]="dataSource" matSort class="w-full">
+        <!-- Name -->
+        <ng-container matColumnDef="name">
+          <th mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              class="!pl-6 !py-4 !font-semibold !text-gray-700">
+            Event
+          </th>
+          <td mat-cell *matCellDef="let e" class="!pl-6 !py-4">
+            <div class="font-medium text-gray-800">{{ e.name }}</div>
+            <div class="text-sm text-gray-500 mt-1">ID: {{ e.id }}</div>
+          </td>
+        </ng-container>
+
+        <!-- Start -->
+        <ng-container matColumnDef="startsOn">
+          <th mat-header-cell
+              *matHeaderCellDef
+              mat-sort-header
+              class="!px-4 !py-4 !font-semibold !text-gray-700">
+            Start
+          </th>
+          <td mat-cell *matCellDef="let e" class="!px-4 !py-4">
+            <div class="font-medium">{{ e.startsOn | date : "short" }}</div>
+            <div class="text-sm text-gray-500 mt-1">
+              <span class="inline-flex items-center">
+                <mat-icon class="text-gray-400 mr-1 text-sm">schedule</mat-icon>
+                {{ e.startsOn | date : "h:mm a" }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- End -->
+        <ng-container matColumnDef="endsOn">
+          <th mat-header-cell
+              *matHeaderCellDef
+              class="!px-4 !py-4 !font-semibold !text-gray-700">
+            End
+          </th>
+          <td mat-cell *matCellDef="let e" class="!px-4 !py-4">
+            <div class="font-medium">{{ e.endsOn | date : "short" }}</div>
+            <div class="text-sm text-gray-500 mt-1">
+              <span class="inline-flex items-center">
+                <mat-icon class="text-gray-400 mr-1 text-sm">schedule</mat-icon>
+                {{ e.endsOn | date : "h:mm a" }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Location -->
+        <ng-container matColumnDef="location">
+          <th mat-header-cell
+              *matHeaderCellDef
+              class="!pr-6 !py-4 !font-semibold !text-gray-700">
+            Location
+          </th>
+          <td mat-cell *matCellDef="let e" class="!pr-6 !py-4">
+            <div class="flex items-center">
+              <mat-icon class="text-gray-400 mr-2">location_on</mat-icon>
+              <div>
+                <div class="font-medium">{{ e.location }}</div>
+                <div class="text-sm text-gray-500">
+                  {{ e.city }}, {{ e.country }}
+                </div>
+              </div>
+            </div>
+          </td>
+        </ng-container>
+
+        <!-- Actions -->
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell
+              *matHeaderCellDef
+              class="!pr-6 !py-4 !text-gray-700">
+            Actions
+          </th>
+          <td mat-cell *matCellDef="let e" class="!pr-6 !py-4">
+            <button mat-icon-button class="text-gray-500 hover:text-indigo-600">
+              <mat-icon>visibility</mat-icon>
+            </button>
+            <button mat-icon-button class="text-gray-500 hover:text-green-600">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button class="text-gray-500 hover:text-red-600">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row
+            *matHeaderRowDef="displayedColumns"
+            class="!bg-gray-50 !h-14"></tr>
+        <tr mat-row
+            *matRowDef="let row; columns: displayedColumns"
+            class="!h-16 hover:!bg-gray-50 !border-t !border-gray-100"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]"
+                     showFirstLastButtons
+                     class="!bg-gray-50 !border-t !border-gray-200"></mat-paginator>
+    </div>
+  </div>
+</div>
